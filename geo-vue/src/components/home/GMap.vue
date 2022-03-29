@@ -11,8 +11,8 @@ export default {
   name: "GMap",
   data() {
     return {
-      lat: 53,
-      lng: -2,
+      lat: 39.099789,
+      lng: -94.57856,
     };
   },
   methods: {
