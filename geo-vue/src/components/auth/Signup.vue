@@ -27,6 +27,8 @@
 import slugify from "slugify";
 import db from "@/firebase/init";
 import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
 export default {
   name: "Signup",
   data() {
@@ -62,24 +64,22 @@ export default {
             this.alias = null;
           } else {
             // this alias does not yet exists in the db
-            console.log(doc, this.slug);
-
-            // firebase
-            //   .auth()
-            //   .createUserWithEmailAndPassword(this.email, this.password)
-            //   .then((user) => {
-            //     ref.set({
-            //       alias: this.alias,
-            //       geolocation: null,
-            //       user_id: user.uid,
-            //     });
-            //   })
-            //   .then(() => {
-            //     this.$router.push({ name: "GMap" });
-            //   })
-            //   .catch((err) => {
-            //     this.feedback = err.message;
-            //   });
+            firebase
+              .auth()
+              .createUserWithEmailAndPassword(this.email, this.password)
+              .then((user) => {
+                ref.set({
+                  alias: this.alias,
+                  geolocation: null,
+                  user_id: user.user.uid,
+                });
+              })
+              .then(() => {
+                this.$router.push({ name: "GMap" });
+              })
+              .catch((err) => {
+                this.feedback = err.message;
+              });
           }
         });
       } else {
