@@ -6,7 +6,10 @@
 
 <script>
 import db from "@/firebase/init";
+// Further FB imports needed for older FB verison
 import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
 export default {
   name: "GMap",
   data() {
@@ -31,6 +34,7 @@ export default {
   },
   mounted() {
     this.renderMap();
+    console.log(firebase.auth().currentUser);
   },
 };
 </script>
