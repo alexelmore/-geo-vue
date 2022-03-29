@@ -1,6 +1,6 @@
 <template>
   <div class="map">
-    <div class="google-map" id="map">home</div>
+    <div class="google-map" id="map"></div>
   </div>
 </template>
 
@@ -14,16 +14,16 @@ export default {
   name: "GMap",
   data() {
     return {
-      lat: 39.099789,
-      lng: -94.57856,
+      lat: 0,
+      lng: 0,
     };
   },
   methods: {
-    renderMap() {
+    renderMap(lat, lng) {
       const map = new google.maps.Map(document.getElementById("map"), {
         center: {
-          lat: this.lat,
-          lng: this.lng,
+          lat,
+          lng,
         },
         zoom: 6,
         maxZoom: 15,
@@ -33,8 +33,17 @@ export default {
     },
   },
   mounted() {
-    this.renderMap();
-    console.log(firebase.auth().currentUser);
+    // get current user
+    let user = firebase.auth().currentUser;
+
+    // Request geo location from user
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        this.lat = pos.coords.latitude;
+        this.lng = pos.coords.longitude;
+        this.renderMap(pos.coords.latitude, pos.coords.longitude);
+      });
+    }
   },
 };
 </script>

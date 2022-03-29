@@ -10,6 +10,7 @@ import "firebase/compat/firestore";
 
 Vue.config.productionTip = false;
 
+// Local variable created to make sure our firebase auth function only runs once
 let app = null;
 
 // wait for firebase auth to init before creating the app

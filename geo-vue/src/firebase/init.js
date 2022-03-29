@@ -1,7 +1,7 @@
 // Old Import syntax imployed to work with old FB setup
 import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
 import "firebase/compat/firestore";
-
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAbXHvZlcKuZEJ72JX0FaFTrtXhskOPD-A",

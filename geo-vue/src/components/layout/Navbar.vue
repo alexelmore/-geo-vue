@@ -34,8 +34,9 @@ export default {
       user: null,
     };
   },
+  // Created hook used to call firebase auth function once the component is created
   created() {
-    // let user = firebase.auth().currentUser
+    // Once component is created, call firebase auth function
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.user = user;
@@ -45,6 +46,7 @@ export default {
     });
   },
   methods: {
+    // Function that logs a user out
     logout() {
       firebase
         .auth()
