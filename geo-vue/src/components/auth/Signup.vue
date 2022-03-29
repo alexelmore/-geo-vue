@@ -64,6 +64,7 @@ export default {
             this.alias = null;
           } else {
             // this alias does not yet exists in the db
+            // Make a call to FB to store the user
             firebase
               .auth()
               .createUserWithEmailAndPassword(this.email, this.password)
@@ -75,6 +76,7 @@ export default {
                 });
               })
               .then(() => {
+                // After successfully signing the user up, redirect them to the home page
                 this.$router.push({ name: "GMap" });
               })
               .catch((err) => {
