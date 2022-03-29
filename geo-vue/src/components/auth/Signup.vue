@@ -41,6 +41,11 @@ export default {
     signup() {
       if (this.email && this.password && this.alias) {
         this.feedback = null;
+        this.slug = slugify(this.alias, {
+          replacement: "-",
+          remove: /[$*_+~.()'"!\-:@]/g,
+          lower: true,
+        });
         console.log({
           email: this.email,
           password: this.password,
