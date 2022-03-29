@@ -8,6 +8,7 @@
 <script>
 
 import db from '@/firebase/init'
+import firebase from "firebase/compat/app";
 export default {
   name: 'GMap',
   data () {
