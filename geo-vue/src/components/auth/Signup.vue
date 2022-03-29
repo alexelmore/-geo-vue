@@ -2,20 +2,21 @@
   <div class="signup container">
     <form @submit.prevent="signup" class="card-panel">
       <h2 class="center deep-purple-text">Signup</h2>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" v-model="email" />
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" v-model="password" />
+      </div>
+      <div class="field">
+        <label for="name">Screen Name</label>
+        <input id="name" type="text" v-model="alias" />
+        <p v-if="feedback" class="red-text center">{{ feedback }}</p>
+      </div>
       <div class="field center">
-        <div class="field">
-          <label for="email">Email</label>
-          <input id="email" type="email" v-model="email" />
-        </div>
-        <div class="field">
-          <label for="password">Password</label>
-          <input id="password" type="password" v-model="password" />
-        </div>
-        <div class="field">
-          <label for="name">Alias</label>
-          <input id="name" type="text" v-model="alias" />
-          <p v-if="feedback" class="red-text center">{{ feedback }}</p>
-        </div>
         <button class="btn deep-purple">Signup</button>
       </div>
     </form>
@@ -38,18 +39,48 @@ export default {
     };
   },
   methods: {
+    // Function that handles signing the user up, on form submission
     signup() {
+      // Check if user filled out all form fields
       if (this.email && this.password && this.alias) {
+        // Set feedback property back to its default of null
         this.feedback = null;
+        // Create slug object
         this.slug = slugify(this.alias, {
           replacement: "-",
           remove: /[$*_+~.()'"!\-:@]/g,
           lower: true,
         });
-        console.log({
-          email: this.email,
-          password: this.password,
-          alias: this.alias,
+        // Create a ref that is of our FB DB collection, "users", passing it our slug as the doc id
+        let ref = db.collection("users").doc(this.slug);
+        // Reach out to our FB DB with our ref
+        ref.get().then((doc) => {
+          // Check if doc exists, if it does, tell user that the screen name (alias) already exists
+          if (doc.exists) {
+            this.feedback =
+              "This screen name already exists. Please pick a different screen name.";
+            this.alias = null;
+          } else {
+            // this alias does not yet exists in the db
+            console.log(doc, this.slug);
+
+            // firebase
+            //   .auth()
+            //   .createUserWithEmailAndPassword(this.email, this.password)
+            //   .then((user) => {
+            //     ref.set({
+            //       alias: this.alias,
+            //       geolocation: null,
+            //       user_id: user.uid,
+            //     });
+            //   })
+            //   .then(() => {
+            //     this.$router.push({ name: "GMap" });
+            //   })
+            //   .catch((err) => {
+            //     this.feedback = err.message;
+            //   });
+          }
         });
       } else {
         this.feedback = "Please fill out all of the form fields";
