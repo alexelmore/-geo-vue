@@ -44,7 +44,7 @@ export default {
           .auth()
           .signInWithEmailAndPassword(this.email, this.password)
           .then((user) => {
-            //console.log(user)
+            // After user has successfully logged in, route them to the home page
             this.$router.push({ name: "GMap" });
           })
           .catch((err) => {

@@ -19,11 +19,11 @@ export default {
     };
   },
   methods: {
-    renderMap(lat, lng) {
+    renderMap() {
       const map = new google.maps.Map(document.getElementById("map"), {
         center: {
-          lat,
-          lng,
+          lat: this.lat,
+          lng: this.lng,
         },
         zoom: 6,
         maxZoom: 15,
@@ -36,13 +36,24 @@ export default {
     // get current user
     let user = firebase.auth().currentUser;
 
-    // Request geo location from user
+    // Request geo location from the user
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((pos) => {
-        this.lat = pos.coords.latitude;
-        this.lng = pos.coords.longitude;
-        this.renderMap(pos.coords.latitude, pos.coords.longitude);
-      });
+      // Get user's current geo position and then update lat and lng data values with user's coords
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          this.lat = pos.coords.latitude;
+          this.lng = pos.coords.longitude;
+          this.renderMap();
+        },
+        (err) => {
+          console.log(err);
+          this.renderMap();
+        },
+        { maximumAge: 60000, timeout: 3000 }
+      );
+    } else {
+      // Position on map using default lat and lng values
+      this.renderMap();
     }
   },
 };
