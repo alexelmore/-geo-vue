@@ -36,6 +36,7 @@ export default {
     // get current user
     let user = firebase.auth().currentUser;
 
+    let userId = user.uid;
     // Request geo location from the user
     if (navigator.geolocation) {
       // Get user's current geo position and then update lat and lng data values with user's coords
@@ -43,7 +44,26 @@ export default {
         (pos) => {
           this.lat = pos.coords.latitude;
           this.lng = pos.coords.longitude;
-          this.renderMap();
+
+          // Find the user record using the current logged in user's id and then update geo coords with it
+          db.collection("users")
+            .where("user_id", "==", userId)
+            .get()
+            .then((snapshot) => {
+              snapshot.forEach((doc) => {
+                db.collection("users")
+                  .doc(doc.id)
+                  .update({
+                    geolocation: {
+                      lat: pos.coords.latitude,
+                      lng: pos.coords.longitude,
+                    },
+                  });
+              });
+            })
+            .then(() => {
+              this.renderMap();
+            });
         },
         (err) => {
           console.log(err);
