@@ -14,29 +14,49 @@ export default {
   name: "GMap",
   data() {
     return {
-      lat: 0,
-      lng: 0,
+      lat: 53,
+      lng: -2,
     };
   },
   methods: {
     renderMap() {
       const map = new google.maps.Map(document.getElementById("map"), {
-        center: {
-          lat: this.lat,
-          lng: this.lng,
-        },
+        center: { lat: this.lat, lng: this.lng },
         zoom: 6,
         maxZoom: 15,
         minZoom: 3,
         streetViewControl: false,
       });
+      db.collection("users")
+        .get()
+        .then((users) => {
+          users.docs.forEach((doc) => {
+            let data = doc.data();
+            if (data.geolocation) {
+              let marker = new google.maps.Marker({
+                position: {
+                  lat: data.geolocation.lat,
+                  lng: data.geolocation.lng,
+                },
+                map,
+              });
+              // // add click event to marker
+              marker.addListener("click", () => {
+                console.log(doc.id);
+                // this.$router.push({
+                //   name: "ViewProfile",
+                //   params: { id: doc.id },
+                // });
+              });
+            }
+          });
+        });
     },
-  }, //
+  },
   mounted() {
     // get current user
     let user = firebase.auth().currentUser;
 
-    let userId = user.uid;
     // Request geo location from the user
     if (navigator.geolocation) {
       // Get user's current geo position and then update lat and lng data values with user's coords
@@ -47,7 +67,7 @@ export default {
 
           // Find the user record using the current logged in user's id and then update geo coords with it
           db.collection("users")
-            .where("user_id", "==", userId)
+            .where("user_id", "==", user.uid)
             .get()
             .then((snapshot) => {
               snapshot.forEach((doc) => {
