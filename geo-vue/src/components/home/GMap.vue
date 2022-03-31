@@ -31,7 +31,7 @@ export default {
         streetViewControl: false,
       });
     },
-  },
+  }, //
   mounted() {
     // get current user
     let user = firebase.auth().currentUser;
