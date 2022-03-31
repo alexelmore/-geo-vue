@@ -14,8 +14,8 @@ export default {
   name: "GMap",
   data() {
     return {
-      lat: 53,
-      lng: -2,
+      lat: 39,
+      lng: -91,
     };
   },
   methods: {
@@ -43,10 +43,10 @@ export default {
               // // add click event to marker
               marker.addListener("click", () => {
                 console.log(doc.id);
-                // this.$router.push({
-                //   name: "ViewProfile",
-                //   params: { id: doc.id },
-                // });
+                this.$router.push({
+                  name: "ViewProfile",
+                  params: { id: doc.id },
+                });
               });
             }
           });
@@ -89,7 +89,7 @@ export default {
           console.log(err);
           this.renderMap();
         },
-        { maximumAge: 60000, timeout: 3000 }
+        { maximumAge: 60000, timeout: 1000 }
       );
     } else {
       // Position on map using default lat and lng values
