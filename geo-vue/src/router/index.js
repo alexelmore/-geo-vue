@@ -11,6 +11,7 @@ import "firebase/compat/firestore";
 Vue.use(Router);
 
 const router = new Router({
+  mode: "history",
   routes: [
     {
       path: "/",
