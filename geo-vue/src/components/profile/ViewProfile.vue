@@ -89,7 +89,7 @@ export default {
         db.collection("comments")
           .add({
             to: this.$route.params.id,
-            from: this.user.id,
+            from: this.user.alias,
             content: this.newComment,
             time: Date.now(),
           })
