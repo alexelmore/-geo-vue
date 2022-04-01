@@ -15,7 +15,7 @@ export default {
   data() {
     return {
       lat: 39,
-      lng: -91, //
+      lng: -91,
     };
   },
   methods: {
